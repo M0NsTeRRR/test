@@ -4,6 +4,8 @@ on:
     push:
       tags:
         - '*'
+permissions:
+  contents: write
 
 jobs:
   changelog:
@@ -24,10 +26,9 @@ jobs:
           config: cliff.toml
           args: -vv --latest --strip header
         env:
-          OUTPUT: CHANGES.md
           GITHUB_REPO: ${{ github.repository }}
 
       - name: Create release
-        run: ls && gh release create ${{ github.ref_name }} -F git-cliff/CHANGELOG.md --draft
+        run: gh release create ${{ github.ref_name }} -F git-cliff/CHANGELOG.md --draft
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
